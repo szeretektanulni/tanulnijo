@@ -1,41 +1,55 @@
-OPENSSL – SZIMMETRIKUS TITKOSÍTÁS / VISSZAFEJTÉS
+FIND ÉS FÁJLMŰVELETEK
 
-1. AES-128-CBC visszafejtés kulccsal és 0 IV-vel
+1. Nem root tulajdonosú könyvtár keresése és válaszfájlba írása
 
 Megoldás:
-openssl aes-128-cbc -d -K 13967 -iv 0 -in /root/13967.enc -out /root/13967.txt
+find /root/39850/ -type d -not -user root > /root/39850.ans
 
 ------------------------------------------------------------
 
-2. AES-128-CBC visszafejtés másik példával
+2. Sticky bit-es könyvtár keresése
 
 Megoldás:
-openssl aes-128-cbc -d -K 39728 -iv 0 -in /root/39728.enc > /root/39728.txt
+find /root/13864/ -type d -perm -1000 > /root/13864.ans
 
 ------------------------------------------------------------
 
-3. DES-EDE visszafejtés jelszóval
+3. Sticky bit-es, de nem írható könyvtár keresése
 
 Megoldás:
-openssl des-ede -d -k 13954 -in /root/13954.enc -out /root/13954.txt
+find /root/18951/ -type d -perm -1000 -and -not \( -perm /222 \) > /root/18951.ans
 
 ------------------------------------------------------------
 
-4. DES-CBC titkosítás jelszóval
+4. Találatok számlálása
 
 Megoldás:
-openssl des-cbc -k it34306 -in /root/34306.txt -out /root/34306.enc
+find /root/13864/ | wc -l
 
 ------------------------------------------------------------
 
-5. DES-EDE-CBC visszafejtés 0 kulccsal és 0 IV-vel
+5. Adott méretű fájl létrehozása dd-vel
 
 Megoldás:
-openssl des-ede-cbc -d -in /root/test-4.enc -K 0 -iv 0 -out /root/test-4.txt
+dd if=/dev/zero of=/root/13895.dat bs=138950 count=1
 
 ------------------------------------------------------------
 
-Megjegyzés:
--K = hexadecimális kulcs
--k = jelszó
--d = decode / visszafejtés
+6. Adott méretű fájl létrehozása fallocate-tel
+
+Megoldás:
+fallocate -l 396650 /root/39665.dat
+
+------------------------------------------------------------
+
+7. Első 70 byte kimásolása
+
+Megoldás:
+head -c 70 /root/160067.dat > /root/160067.part
+
+------------------------------------------------------------
+
+8. Üres fájl létrehozása
+
+Megoldás:
+touch /root/test-2.txt
